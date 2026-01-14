@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Swift Speed Test – Free Internet Download Speed & Ping Test</title>
+    <meta name="description" content="Test your internet speed instantly with My Swift Speed Test. Check download speed and ping (latency) with our fast, accurate, and free online tool. Optimized for mobile and desktop.">
+    <meta name="keywords" content="internet speed test, check internet speed, speed test online, download speed test, ping test, myswiftspeedtest">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://myswiftspeedtest.com/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://myswiftspeedtest.com/">
+    <meta property="og:title" content="My Swift Speed Test – Fast & Accurate Internet Testing">
+    <meta property="og:description" content="Check your download speed and ping in seconds. The most modern, mobile-optimized speed test online.">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #E50914; /* Brand Red */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            color: white;
+            min-height: 100vh;
+        }
+        #root {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: #E50914;
+        }
+        .neon-text-shadow {
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+        }
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.1); }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; }
+        
+        /* Animation Utility */
+        .animate-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+
+    <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@19.0.0",
+    "react-dom": "https://esm.sh/react-dom@19.0.0",
+    "react-dom/client": "https://esm.sh/react-dom@19.0.0/client",
+    "lucide-react": "https://esm.sh/lucide-react@0.460.0?external=react",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "react/": "https://esm.sh/react@^19.2.3/"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="module" src="index.tsx"></script>
+</body>
+</html>
