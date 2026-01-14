@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { RefreshCw, Play, Info, AlertTriangle, Github, Zap, History } from 'lucide-react';
+import { RefreshCw, Play, Info, AlertTriangle, Github, Zap, History, CheckCircle2 } from 'lucide-react';
 import { SpeedResult, TestState } from './types.ts';
 import { measureDownloadSpeed, measureUploadSpeed, measurePing } from './services/speedTest.ts';
 import SpeedGauge from './components/SpeedGauge.tsx';
@@ -9,6 +9,7 @@ const LOCAL_STORAGE_KEY = 'swiftspeed_results_v1';
 
 const App: React.FC = () => {
   const [history, setHistory] = useState<SpeedResult[]>([]);
+  const [pingSuccess, setPingSuccess] = useState(false);
   const [state, setState] = useState<TestState>({
     status: 'IDLE',
     currentDownload: null,
@@ -31,11 +32,13 @@ const App: React.FC = () => {
   }, [history]);
 
   const startTest = async () => {
+    setPingSuccess(false);
     setState({ status: 'RUNNING', currentDownload: 0, currentUpload: 0, currentPing: 0, error: null });
 
     try {
       const ping = await measurePing();
       setState(prev => ({ ...prev, currentPing: ping }));
+      setPingSuccess(true);
 
       const [finalDownload, finalUpload] = await Promise.all([
         measureDownloadSpeed((p) => setState(prev => ({ ...prev, currentDownload: p }))),
@@ -65,7 +68,7 @@ const App: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-10 md:py-20 flex flex-col min-h-screen w-full">
-      <header className="mb-12 text-center animate-in fade-in slide-in-from-top duration-500">
+      <header className="mb-12 text-center animate-in">
         <div className="inline-flex items-center gap-2 bg-white text-[#E50914] px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-[0.2em] mb-6 shadow-xl">
           <Zap className="w-3 h-3 fill-current" /> Instant Engine
         </div>
@@ -81,7 +84,14 @@ const App: React.FC = () => {
         <section className="relative glass-panel rounded-[2.5rem] p-8 md:p-12 text-center shadow-2xl overflow-hidden">
           <div className="relative z-10">
             <div className="grid grid-cols-3 gap-3 md:gap-6 mb-12">
-              <SpeedGauge value={state.currentPing || 0} label="Ping" unit="ms" active={state.status === 'RUNNING'} />
+              <div className="relative">
+                <SpeedGauge value={state.currentPing || 0} label="Ping" unit="ms" active={state.status === 'RUNNING'} />
+                {pingSuccess && state.status === 'RUNNING' && (
+                   <div className="absolute -top-2 -right-2 bg-green-500 rounded-full p-1 shadow-lg animate-bounce">
+                     <CheckCircle2 className="w-4 h-4 text-white" />
+                   </div>
+                )}
+              </div>
               <SpeedGauge value={state.currentDownload || 0} label="Down" unit="Mbps" active={state.status === 'RUNNING'} />
               <SpeedGauge value={state.currentUpload || 0} label="Up" unit="Mbps" active={state.status === 'RUNNING'} />
             </div>
@@ -90,6 +100,12 @@ const App: React.FC = () => {
               {state.status === 'ERROR' && (
                 <div className="flex items-center gap-2 text-yellow-300 mb-6 font-bold">
                   <AlertTriangle className="w-5 h-5" /> {state.error}
+                </div>
+              )}
+
+              {pingSuccess && state.status === 'RUNNING' && (
+                <div className="text-green-300 text-xs font-bold uppercase tracking-widest mb-4 animate-in">
+                  Ping Measured Successfully!
                 </div>
               )}
 
@@ -103,11 +119,11 @@ const App: React.FC = () => {
                 ) : (
                   <Play className="w-7 h-7 fill-current group-hover:scale-110 transition-transform" />
                 )}
-                {state.status === 'RUNNING' ? 'Testing...' : 'Go'}
+                {state.status === 'RUNNING' ? 'Testing...' : 'START'}
               </button>
               
               <p className="mt-6 text-xs font-black uppercase tracking-widest opacity-40">
-                {state.status === 'RUNNING' ? 'Connecting to nearest server' : 'Press Go to start test'}
+                {state.status === 'RUNNING' ? 'Connecting to nearest server' : 'Press START to start test'}
               </p>
             </div>
           </div>
